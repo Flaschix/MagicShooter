@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
     preload() {
         this.loding = new AnimationControl(AnimationControl.LOADING);
         this.loding.addLoadOnScreen(this, 1280 / 2, 720 / 2, 0.3, 0.3);
-        this.load.image('map', './assets/map/Map.png');
+        this.load.image('map', './assets/map/Map2.png');
         this.load.image('overlayBackground', './assets/background/overlayBackground.png')
         this.load.image('winKey', `./assets/win/Win ${this.stage}.png`);
     }
@@ -140,12 +140,16 @@ export class GameScene extends Phaser.Scene {
     }
 
     shootBullet() {
-        const bullet = this.matter.add.image(this.player.x, this.player.y - 100, 'bullet');
+        const bullet = this.matter.add.image(this.player.x, this.player.y - 50, 'bullet');
         bullet.setFixedRotation();
         bullet.setVelocityY(-10);
         bullet.setScale(0.3);
         bullet.setCollisionCategory(this.bulletCollisionCategory);
         bullet.setCollidesWith([this.monsterCollisionCategory]);
+
+        bullet.setFrictionAir(0);
+        bullet.setFriction(0);
+        bullet.setFrictionStatic(0);
 
         bullet.setData('type', 'bullet');
 
@@ -276,6 +280,15 @@ export class GameScene extends Phaser.Scene {
             }
 
             bullet.destroy();
+
+            // Отображение спрайта взрыва
+            const explosion = this.add.sprite(monster.x, monster.y, 'explosion').setScale(0.3);
+
+            // Удаление спрайта взрыва через некоторое время
+            this.time.delayedCall(500, () => {
+                explosion.destroy();
+            });
+
             monster.destroy();
 
             this.bullets = this.bullets.filter(b => b !== bullet);

@@ -36,6 +36,7 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('monster33', './assets/monster/Monster 9.png');
 
         this.load.image('heart', './assets/character/heart.png')
+        this.load.image('explosion', './assets/character/explosion.png');
 
         //spell
         this.load.image('bullet', './assets/character/spell.png');
