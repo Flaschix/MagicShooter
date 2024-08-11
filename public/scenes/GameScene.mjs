@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
     preload() {
         this.loding = new AnimationControl(AnimationControl.LOADING);
         this.loding.addLoadOnScreen(this, 1280 / 2, 720 / 2, 0.3, 0.3);
-        this.load.image('map', './assets/map/map.png');
+        this.load.image('map', './assets/map/Map.png');
         this.load.image('overlayBackground', './assets/background/overlayBackground.png')
         this.load.image('winKey', `./assets/win/Win ${this.stage}.png`);
     }
