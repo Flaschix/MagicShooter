@@ -153,8 +153,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     updateMonsterSpawnRate() {
-        const maxSpawnDelay = 1000;
-        const minSpawnDelay = 100;
+        const maxSpawnDelay = 900;
+        const minSpawnDelay = 200;
         const maxSpeed = 10;
 
         this.monsterSpawnDelay = Math.max(minSpawnDelay, maxSpawnDelay - Math.floor(this.score / 10) * 10);
@@ -171,6 +171,31 @@ export class GameScene extends Phaser.Scene {
     spawnMonster() {
         const monsterType = Phaser.Math.Between(1, 3);
         const monster = this.matter.add.sprite(Phaser.Math.Between(100, 1180), 0, `monster${monsterType}${this.stage}`).setScale(0.25);
+
+        let scaleMonsterBody = 0.25;
+
+        let vertices;
+        if (monsterType == 1) {
+            if (this.stage == 1) vertices = [{ x: 1.5 * scaleMonsterBody, y: 166 * scaleMonsterBody }, { x: 174 * scaleMonsterBody, y: 216.5 * scaleMonsterBody }, { x: 275 * scaleMonsterBody, y: 216.5 * scaleMonsterBody }, { x: 455 * scaleMonsterBody, y: 166 * scaleMonsterBody }, { x: 412 * scaleMonsterBody, y: 58 * scaleMonsterBody }, { x: 327.5 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 134.5 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 34 * scaleMonsterBody, y: 58 * scaleMonsterBody }];
+            if (this.stage == 2) vertices = [{ x: 37.5 * scaleMonsterBody, y: 262 * scaleMonsterBody }, { x: 156 * scaleMonsterBody, y: 194.5 * scaleMonsterBody }, { x: 291 * scaleMonsterBody, y: 262 * scaleMonsterBody }, { x: 319 * scaleMonsterBody, y: 127 * scaleMonsterBody }, { x: 240.5 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 88.5 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 1 * scaleMonsterBody, y: 127 * scaleMonsterBody }];
+            if (this.stage == 3) vertices = [{ x: 98 * scaleMonsterBody, y: 291 * scaleMonsterBody }, { x: 163.5 * scaleMonsterBody, y: 353 * scaleMonsterBody }, { x: 223.5 * scaleMonsterBody, y: 353 * scaleMonsterBody }, { x: 291 * scaleMonsterBody, y: 291 * scaleMonsterBody }, { x: 385.5 * scaleMonsterBody, y: 194.5 * scaleMonsterBody }, { x: 277.5 * scaleMonsterBody, y: 153.5 * scaleMonsterBody }, { x: 223.5 * scaleMonsterBody, y: 103.5 * scaleMonsterBody }, { x: 213.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 144 * scaleMonsterBody, y: 24.5 * scaleMonsterBody }, { x: 144 * scaleMonsterBody, y: 134.5 * scaleMonsterBody }, { x: 40 * scaleMonsterBody, y: 175 * scaleMonsterBody }, { x: 1 * scaleMonsterBody, y: 229 * scaleMonsterBody }, { x: 98 * scaleMonsterBody, y: 248.5 * scaleMonsterBody }];
+        } else if (monsterType == 2) {
+            if (this.stage == 1) vertices = [{ x: 1.5 * scaleMonsterBody, y: 198.5 * scaleMonsterBody }, { x: 149 * scaleMonsterBody, y: 281 * scaleMonsterBody }, { x: 295 * scaleMonsterBody, y: 198.5 * scaleMonsterBody }, { x: 266 * scaleMonsterBody, y: 104.5 * scaleMonsterBody }, { x: 219 * scaleMonsterBody, y: 141 * scaleMonsterBody }, { x: 219 * scaleMonsterBody, y: 50.5 * scaleMonsterBody }, { x: 183 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 106 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 78.5 * scaleMonsterBody, y: 36.5 * scaleMonsterBody }, { x: 78.5 * scaleMonsterBody, y: 122.5 * scaleMonsterBody }, { x: 19.5 * scaleMonsterBody, y: 95.5 * scaleMonsterBody }];
+            if (this.stage == 2) vertices = [{ x: 1 * scaleMonsterBody, y: 124 * scaleMonsterBody }, { x: 63 * scaleMonsterBody, y: 256.5 * scaleMonsterBody }, { x: 178.5 * scaleMonsterBody, y: 205.5 * scaleMonsterBody }, { x: 178.5 * scaleMonsterBody, y: 56.5 * scaleMonsterBody }, { x: 139 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }, { x: 38 * scaleMonsterBody, y: 0.5 * scaleMonsterBody }];
+            if (this.stage == 3) vertices = [{ x: 1.5 * scaleMonsterBody, y: 239.5 * scaleMonsterBody }, { x: 135 * scaleMonsterBody, y: 319 * scaleMonsterBody }, { x: 268 * scaleMonsterBody, y: 303.5 * scaleMonsterBody }, { x: 363 * scaleMonsterBody, y: 216.5 * scaleMonsterBody }, { x: 268 * scaleMonsterBody, y: 180.5 * scaleMonsterBody }, { x: 247.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 119.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 119.5 * scaleMonsterBody, y: 162.5 * scaleMonsterBody }];
+
+        } else {
+            if (this.stage == 1) vertices = vertices = [{ x: 1.5 * scaleMonsterBody, y: 203 * scaleMonsterBody }, { x: 151 * scaleMonsterBody, y: 271 * scaleMonsterBody }, { x: 302.5 * scaleMonsterBody, y: 186.5 * scaleMonsterBody }, { x: 252 * scaleMonsterBody, y: 152.5 * scaleMonsterBody }, { x: 198 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 95.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 37.5 * scaleMonsterBody, y: 152.5 * scaleMonsterBody }];
+            if (this.stage == 2) vertices = [{ x: 18.5 * scaleMonsterBody, y: 204 * scaleMonsterBody }, { x: 105.5 * scaleMonsterBody, y: 271.5 * scaleMonsterBody }, { x: 179 * scaleMonsterBody, y: 271.5 * scaleMonsterBody }, { x: 263.5 * scaleMonsterBody, y: 220.5 * scaleMonsterBody }, { x: 297 * scaleMonsterBody, y: 102.5 * scaleMonsterBody }, { x: 224 * scaleMonsterBody, y: 15 * scaleMonsterBody }, { x: 77.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 1.5 * scaleMonsterBody, y: 85.5 * scaleMonsterBody }];
+            if (this.stage == 3) vertices = [{ x: 1 * scaleMonsterBody, y: 195.5 * scaleMonsterBody }, { x: 88 * scaleMonsterBody, y: 293 * scaleMonsterBody }, { x: 203.5 * scaleMonsterBody, y: 293 * scaleMonsterBody }, { x: 282.5 * scaleMonsterBody, y: 195.5 * scaleMonsterBody }, { x: 282.5 * scaleMonsterBody, y: 106 * scaleMonsterBody }, { x: 203.5 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 88 * scaleMonsterBody, y: 1 * scaleMonsterBody }, { x: 1 * scaleMonsterBody, y: 85.5 * scaleMonsterBody }];
+        }
+
+        monster.setBody({
+            type: 'fromVertices',
+            verts: vertices
+        });
+
+
         monster.setFixedRotation();
 
         const speed = Phaser.Math.Between(this.monsterSpeedMin, this.monsterSpeedMax);
