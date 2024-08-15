@@ -1,6 +1,7 @@
 import { CST } from "../CST.mjs";
 import { createExitMenu } from "../share/UICreator.mjs";
 import { createRestartMenu } from "../share/UICreator.mjs";
+import { isMobile } from "../share/UICreator.mjs";
 
 export class LobbyScene extends Phaser.Scene {
     constructor() {
@@ -46,19 +47,22 @@ export class LobbyScene extends Phaser.Scene {
         this.loadingSprite.stop();
         this.loadingSprite.destroy();
 
-        createExitMenu(this);
+        createExitMenu(this, null, null, isMobile());
         createRestartMenu(this);
 
         // Добавляем фон
         this.add.image(this.scale.width / 2, this.scale.height / 2, 'backgroundMenu').setDisplaySize(this.scale.width, this.scale.height);
 
-        let stage1 = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 - 100, 'stage1');
+        let stage1 = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 - 200, 'stage1');
+        stage1.setScale(1.3);
         stage1.setInteractive();
 
         let stage2 = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'stage2');
+        stage2.setScale(1.3);
         stage2.setInteractive();
 
-        let stage3 = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 100, 'stage3');
+        let stage3 = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 200, 'stage3');
+        stage3.setScale(1.3);
         stage3.setInteractive();
 
         // Обработчик нажатия на кнопку

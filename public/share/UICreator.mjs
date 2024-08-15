@@ -28,7 +28,7 @@ export function createUIRight(self) {
     uiContainer.setScrollFactor(0);
 }
 
-export function createUILeftMobile(context, settingsImg, exitImg, settingX, settingY, exitX, exitY, settingsEvent, exitEvent) {
+export function createUILeftMobile(context, exitImg, exitX, exitY, exitEvent) {
     const uiContainer = context.add.dom(0, context.cameras.main.height / 2).createFromHTML(`
         <div style="text-align: center;background:#0F0920;height: 720px; width: 50px">
         </div>
@@ -37,20 +37,15 @@ export function createUILeftMobile(context, settingsImg, exitImg, settingX, sett
     uiContainer.setOrigin(0.5, 0.5);
     uiContainer.setScrollFactor(0);
 
-    const settingsButton = context.add.image(settingX, settingY, settingsImg).setInteractive();
-    const exitButton = context.add.image(exitX, exitY, exitImg).setInteractive();
+    context.exitButton = context.add.image(exitX, exitY, exitImg).setInteractive();
 
-    settingsButton.setDisplaySize(100, 100);
-    exitButton.setDisplaySize(100, 100);
+    context.exitButton.setDisplaySize(100, 100);
 
-    settingsButton.setScrollFactor(0);
-    exitButton.setScrollFactor(0);
+    context.exitButton.setDepth(2);
 
-    settingsButton.on('pointerdown', (pointer) => {
-        settingsEvent(context);
-    });
+    context.exitButton.setScrollFactor(0);
 
-    exitButton.on('pointerdown', (pointer) => {
+    context.exitButton.on('pointerdown', (pointer) => {
         exitEvent(context);
     });
 }
@@ -84,7 +79,7 @@ export function createExitMenu(self, eventLeaveBtn, eventCloseBtn, isMobile) {
                 <input type="image" src="./assets/button/cancel-exitMobile.png" alt="Close" class="exit-button" id="close-btn">
             </div>
             `);
-        self.exitContainer.setOrigin(3, 1.5);
+        self.exitContainer.setOrigin(0.5);
     } else {
         self.exitContainer = self.add.dom(0, 0).createFromHTML(`
             <div class="exit-container">
@@ -112,10 +107,10 @@ export function createExitMenu(self, eventLeaveBtn, eventCloseBtn, isMobile) {
 
 export function createRestartMenu(self, eventRestartBtn, eventCloseBtn, isMobile) {
     if (isMobile) {
-        self.restartContainer = self.add.dom(self.cameras.main.width / 2, 0).createFromHTML(`
+        self.restartContainer = self.add.dom(self.cameras.main.width / 2, self.cameras.main.height / 2).createFromHTML(`
             <div class="restart-container">
-                <input type="image" src="./assets/button/LeaveSpaceMobile.png" alt="Leave space" class="restart-button" id="restart">
-                <input type="image" src="./assets/button/cancel-exitMobile.png" alt="Close" class="restart-button" id="close">
+                <input type="image" src="./assets/button/restart-mobile.png" alt="Leave space" class="restart-button" id="restart">
+                <input type="image" src="./assets/button/cancel.png" alt="Close" class="restart-button" id="close">
             </div>
             `);
         self.restartContainer.setOrigin(0.5);

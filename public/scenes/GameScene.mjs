@@ -7,6 +7,7 @@ import { createUI } from "../share/UICreator.mjs";
 import { createExitMenu } from "../share/UICreator.mjs";
 import { isMobile } from "../share/UICreator.mjs";
 import { createRestartMenu } from "../share/UICreator.mjs";
+import { createUILeftMobile } from "../share/UICreator.mjs";
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -23,6 +24,13 @@ export class GameScene extends Phaser.Scene {
         this.load.image('map', './assets/map/Map2.png');
         this.load.image('overlayBackground', './assets/background/overlayBackground.png')
         this.load.image('winKey', `./assets/win/Win ${this.stage}.png`);
+
+        if (isMobile()) {
+            this.load.image('joystickBase', 'assets/joystick/joystick-back.png');
+            this.load.image('joystickThumb', 'assets/joystick/thrumb-btn.png');
+            this.load.image('touchButton', 'assets/joystick/touch-button.png');
+            this.load.image('exitMobile', 'assets/button/exitMobile.png');
+        }
     }
 
     create() {
@@ -38,7 +46,17 @@ export class GameScene extends Phaser.Scene {
         createUIRight(this);
         createUIBottom(this);
         createUITop(this);
-        createUI(this, this.showExitMenu);
+
+        if (this.mobileFlag) {
+            this.createJoystick('joystickBase', 'joystickThumb', this.isDragging, 160, this.cameras.main.height - 120);
+            this.createMobileXButton('touchButton', 'joystickBase', this.cameras.main.width - 150, this.cameras.main.height - 120);
+            createUILeftMobile(this, 'exitMobile', 90, 70, this.showExitMenu);
+            this.leftWall = 0;
+        } else {
+            createUI(this, this.showExitMenu);
+            this.leftWall = 80;
+        }
+
 
         createExitMenu(this, this.leaveGame, this.closeExitMenu, this.mobileFlag);
         createRestartMenu(this, this.restartGame, this.closeRestartMenu, this.mobileFlag)
@@ -380,23 +398,36 @@ export class GameScene extends Phaser.Scene {
 
     update() {
         this.player.setVelocity(0);
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-5);
-        } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(5);
-        } else if (this.cursors.up.isDown) {
-            this.player.setVelocityY(-7);
-        } else if (this.cursors.down.isDown) {
-            this.player.setVelocityY(7);
+        if (!this.mobileFlag) {
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-5);
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(5);
+            } else if (this.cursors.up.isDown) {
+                this.player.setVelocityY(-7);
+            } else if (this.cursors.down.isDown) {
+                this.player.setVelocityY(7);
+            }
+        } else {
+            if (this.joystickThumb.x < this.joystickBase.x - 10) {
+                this.player.setVelocityX(-5);
+            } else if (this.joystickThumb.x > this.joystickBase.x + 10) {
+                this.player.setVelocityX(5);
+            } else if (this.joystickThumb.y < this.joystickBase.y - 10) {
+                this.player.setVelocityY(-7);
+            } else if (this.joystickThumb.y > this.joystickBase.y + 10) {
+                this.player.setVelocityY(7);
+            }
         }
+
 
         const screenWidth = this.sys.game.config.width;
         const screenHeight = this.sys.game.config.height;
         const playerWidth = this.player.displayWidth;
         const playerHeight = this.player.displayHeight;
 
-        if (this.player.x < playerWidth / 2 + 80) {
-            this.player.x = playerWidth / 2 + 80;
+        if (this.player.x < playerWidth / 2 + this.leftWall) {
+            this.player.x = playerWidth / 2 + this.leftWall;
         } else if (this.player.x > screenWidth - playerWidth / 2) {
             this.player.x = screenWidth - playerWidth / 2;
         }
@@ -453,5 +484,68 @@ export class GameScene extends Phaser.Scene {
 
     closeRestartMenu(self) {
         self.restartContainer.setVisible(false);
+    }
+
+    createJoystick(joystickBase, joystickThumb, flag, x, y) {
+
+        this.joystickBase = this.add.image(x, y, joystickBase).setInteractive();
+        this.joystickThumb = this.add.image(x, y, joystickThumb).setInteractive();
+
+        this.joystickBase.setDisplaySize(150, 150);
+        this.joystickThumb.setDisplaySize(100, 100);
+
+        this.joystickBase.setDepth(2);
+        this.joystickThumb.setDepth(2);
+
+        // Привязываем джойстик к экрану
+        this.joystickBase.setScrollFactor(0);
+        this.joystickThumb.setScrollFactor(0);
+
+
+        this.joystickThumb.on('pointerdown', (pointer) => {
+            flag = true;
+            this.dragStartX = pointer.x;
+            this.dragStartY = pointer.y;
+        });
+
+        this.input.on('pointermove', (pointer) => {
+            if (flag) {
+                let deltaX = pointer.x - this.dragStartX;
+                let deltaY = pointer.y - this.dragStartY;
+                let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                let maxDistance = 50;
+
+                if (distance > maxDistance) {
+                    let angle = Math.atan2(deltaY, deltaX);
+                    deltaX = Math.cos(angle) * maxDistance;
+                    deltaY = Math.sin(angle) * maxDistance;
+                }
+
+                this.joystickThumb.setPosition(this.joystickBase.x + deltaX, this.joystickBase.y + deltaY);
+            }
+        });
+
+        this.input.on('pointerup', () => {
+            flag = false;
+            this.joystickThumb.setPosition(this.joystickBase.x, this.joystickBase.y);
+        });
+    }
+
+    createMobileXButton(nameButton, nameBackgorund, x, y) {
+        this.buttonBackground = this.add.image(x, y, nameBackgorund);
+        this.mobileXButton = this.add.image(x, y, nameButton).setInteractive();
+
+        this.buttonBackground.setDisplaySize(150, 150);
+        this.mobileXButton.setDisplaySize(100, 100);
+
+        this.buttonBackground.setDepth(2);
+        this.mobileXButton.setDepth(2);
+
+        this.mobileXButton.setScrollFactor(0);
+        this.buttonBackground.setScrollFactor(0);
+
+        this.mobileXButton.on('pointerdown', () => {
+            this.shootBullet();
+        });
     }
 }
