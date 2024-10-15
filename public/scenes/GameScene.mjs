@@ -279,12 +279,13 @@ export class GameScene extends Phaser.Scene {
             this.score += monster.score;
             this.scoreText.setText('Score: ' + this.score);
 
-            if (this.score >= 2000) {
+            if (this.score >= 100) {
                 this.overlayBackground.setVisible(true);
                 this.winKey.setVisible(true);
+                this.textA.setVisible(true);
                 this.winText.setVisible(true);
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.winKey, this.winText],
+                    targets: [this.overlayBackground, this.winKey, this.winText, this.textA],
                     alpha: 1,
                     duration: 300,
                     onComplete: () => {
@@ -368,6 +369,14 @@ export class GameScene extends Phaser.Scene {
         this.winKey.setVisible(false);
         this.winKey.setDepth(2);
         this.winKey.setAlpha(0);
+
+        this.textA = this.add.text(this.cameras.main.width / 2 - 320, this.cameras.main.height / 2 - 120, '', { font: "normal 60px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+        if (this.stage == 1) this.textA.setText('Congrats!\nFirst part of the code\n“RIM”');
+        else if (this.stage == 2) this.textA.setText('Congrats!\nSecond part of the code\n“BOL”');
+        else if (this.stage == 3) this.textA.setText('Congrats!\nThird part of the code\n“DON”');
+
+        this.textA.setVisible(false);
+        this.textA.setAlpha(0);
 
         this.winText = this.add.text(640, 50, 'Congrats!', {
             font: 'bold 62px Manrope',
