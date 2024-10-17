@@ -279,7 +279,7 @@ export class GameScene extends Phaser.Scene {
             this.score += monster.score;
             this.scoreText.setText('Score: ' + this.score);
 
-            if (this.score >= 100) {
+            if (this.score >= 2000) {
                 this.overlayBackground.setVisible(true);
                 this.winKey.setVisible(true);
                 this.textA.setVisible(true);
