@@ -1,6 +1,6 @@
 import { CST } from "../CST.mjs";
 import { AnimationControl } from "../share/AnimationControl.mjs";
-import { createUIRight } from "../share/UICreator.mjs";
+import { createUIRight, decrypt } from "../share/UICreator.mjs";
 import { createUITop } from "../share/UICreator.mjs";
 import { createUIBottom } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -371,9 +371,9 @@ export class GameScene extends Phaser.Scene {
         this.winKey.setAlpha(0);
 
         this.textA = this.add.text(this.cameras.main.width / 2 - 320, this.cameras.main.height / 2 - 120, '', { font: "normal 60px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
-        if (this.stage == 1) this.textA.setText('Congrats!\nFirst part of the code\n“RIM”');
-        else if (this.stage == 2) this.textA.setText('Congrats!\nSecond part of the code\n“BOL”');
-        else if (this.stage == 3) this.textA.setText('Congrats!\nThird part of the code\n“DON”');
+        if (this.stage == 1) this.textA.setText(decrypt('Frqjudwv!\nIluvw sduw ri wkh frgh\n“ULP”'));
+        else if (this.stage == 2) this.textA.setText(decrypt('Frqjudwv!\nVhfrqg sduw ri wkh frgh\n“ERO”'));
+        else if (this.stage == 3) this.textA.setText(decrypt('Frqjudwv!\nWklug sduw ri wkh frgh\n“GRQ”'));
 
         this.textA.setVisible(false);
         this.textA.setAlpha(0);
