@@ -283,9 +283,10 @@ export class GameScene extends Phaser.Scene {
                 this.overlayBackground.setVisible(true);
                 this.winKey.setVisible(true);
                 this.textA.setVisible(true);
+                this.textA2.setVisible(true);
                 this.winText.setVisible(true);
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.winKey, this.winText, this.textA],
+                    targets: [this.overlayBackground, this.winKey, this.winText, this.textA, this.textA2],
                     alpha: 1,
                     duration: 300,
                     onComplete: () => {
@@ -370,13 +371,27 @@ export class GameScene extends Phaser.Scene {
         this.winKey.setDepth(2);
         this.winKey.setAlpha(0);
 
-        this.textA = this.add.text(this.cameras.main.width / 2 - 320, this.cameras.main.height / 2 - 120, '', { font: "normal 60px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
-        if (this.stage == 1) this.textA.setText(decrypt('Frqjudwv!\nIluvw sduw ri wkh frgh\n“ULP”'));
-        else if (this.stage == 2) this.textA.setText(decrypt('Frqjudwv!\nVhfrqg sduw ri wkh frgh\n“ERO”'));
-        else if (this.stage == 3) this.textA.setText(decrypt('Frqjudwv!\nWklug sduw ri wkh frgh\n“GRQ”'));
+        this.textA = this.add.text(this.cameras.main.width / 2 - 220, this.cameras.main.height / 2 - 120, '', { font: "normal 60px MyCustomFont2", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+        this.textA2 = this.add.text(this.cameras.main.width / 2 - 60, this.cameras.main.height / 2 + 20, '', { font: "normal 60px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+
+        if (this.stage == 1) {
+            this.textA.setText(decrypt('Тскзугеовип!\nТиуегв ъгфхя нсзг'));
+            this.textA2.setText(decrypt('“ULP”'));
+        }
+        else if (this.stage == 2) {
+            this.textA.setText(decrypt('Тскзугеовип!\nЕхсугв ъгфхя нсзг'));
+            this.textA2.setText(decrypt('“ERO”'));
+        }
+        else if (this.stage == 3) {
+            this.textA.setText(decrypt('Тскзугеовип!\nХуихяв ъгфхя нсзг'));
+            this.textA2.setText(decrypt('“GRQ”'));
+        }
 
         this.textA.setVisible(false);
         this.textA.setAlpha(0);
+
+        this.textA2.setVisible(false);
+        this.textA2.setAlpha(0);
 
         this.winText = this.add.text(640, 50, 'Congrats!', {
             font: 'bold 62px Manrope',

@@ -11,6 +11,11 @@ body {
     src: url('assets/font/Handlee-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'MyCustomFont2';
+    src: url('assets/font/YsabeauInfant-VariableFont_wght.ttf') format('truetype');
+}
+
 #lottieGif {
     min-width: 500px;
     min-height: 500px;
